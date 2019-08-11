@@ -1,6 +1,7 @@
 <template>
-  <div class="a clearfix" id='allmap'>
-    <baidu-map class="hello" :zoom="zoom" @ready="handler"  center="西安" :scroll-wheel-zoom="true">
+  <div class="a" id='allmap'>
+    <sider></sider>
+    <baidu-map :class="menuShow?'hello flex9':'hello flex10'" :zoom="zoom" @ready="handler"  center="西安" :scroll-wheel-zoom="true">
       <!-- <bm-view class="hello"></bm-view> -->
       <!-- <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT"></bm-navigation> -->
       <bm-map-type :map-types="['BMAP_NORMAL_MAP','BMAP_SATELLITE_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_BOTTOM_RIGHT" type=""></bm-map-type>
@@ -14,7 +15,7 @@
     </baidu-map>
     <!-- 经纬度 -->
     <div class="jwd">
-      经度：{{lng}} ， 纬度：{{lat}} 
+      经度：{{lng}} ， 纬度：{{lat}}
     </div>
     <!-- 搜索栏 -->
     <el-autocomplete
@@ -61,37 +62,7 @@
             </ul>
           </div>
         </el-collapse-item>
-    </el-collapse>
-    <!-- 导航栏 -->
-    <div class="navigator clearfix">
-      <el-menu 
-        default-active="1"
-        class="el-menu-vertical-demo"
-        text-color="#fff"
-        background-color="#8AC7B3"
-        active-text-color="#fff">
-        <div class="ava">
-          <div class="avator">
-            <image src='src/assets/images/bo.jpg'></image>
-          </div>
-        <div class="avatorBtn" >退出</div>
-        </div>        
-        <el-submenu :index="item.titleIndex" v-for="item in menu"  :key="item.titleIndex">
-          <template slot="title">
-            <i :class="item.icon"></i>
-            <span>{{item.title}}</span>
-          </template>
-           <el-submenu :index="ele.index" v-for="ele in item.project"  :key="ele.index">
-            <template slot="title">{{ele.name}}</template>
-             <el-menu-item-group >
-                <el-menu-item @click.native="changeTitle(route_keys.levelIndex)" v-for="route_keys in item.levelInfo" 
-                  :index="route_keys.levelIndex" :key="route_keys.levelIndex" :route="route_keys.path">{{route_keys.level}}</el-menu-item>
-                </el-menu-item-group>
-          </el-submenu>
-        </el-submenu>        
-      </el-menu>
-    </div>
-
+    </el-collapse>    
   </div>
 </template>
 <script>
@@ -135,12 +106,14 @@ import * as consts from '../common/const'
         lat:40.057031}
       ],
       projects:[],
-      menu:{},
+      menuShow:false,
       isSearch:false,
+     
       }
+     
     },
     created(){
-      this.getMenu()
+      // this.getMenu()
     },
     mounted(){
       this.restaurants = this.loadAll()
@@ -175,12 +148,7 @@ import * as consts from '../common/const'
         this.lng=e.point.lng.toFixed(2)+'°'
         this.lat= e.point.lat.toFixed(2)+'°'
         })
-      },
-      // 获取导航栏
-      getMenu(){
-        this.menu=consts.ASIDE_TITLE
-        this.projects=this.menu.project
-      },      
+      },            
       // 点击大的项目标志，打开快速搜索
       goSearch(name){
         this.isSearch=true
@@ -228,22 +196,30 @@ import * as consts from '../common/const'
           shp:[{id:0,name:'水系',src:'path'},{id:1,name:'坡度',src:'path'},{id:2,name:'滑坡点'},{id:3,name:'危岩特征表-笔架山区域'},{id:4,name:'危岩特征表-笔架山区域'},{id:5,name:'危岩特征表-笔架山区域'},{id:6,name:'危岩特征表-笔架山区域'},],
           img:[{id:0,name:'长江干流地灾调查总报告-A3',src:'path',url:require('../assets/images/1.jpg')},{id:1,name:'巫山长江沿线地层简表',src:'path',url:require('../assets/images/1.jpg')},{id:2,name:'危岩特征表-笔架山区域',url:require('../assets/images/1.jpg')},{id:3,name:'危岩特征表-笔架山区域',url:require('../assets/images/1.jpg')},{id:4,name:'危岩特征表-笔架山区域',url:'../assets/images/1.jpg'}]
         }
-      }
+      },
+     
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+@import '../../static/css/clear';
+@import '../../static/css/common';
 .a{
   position: relative;
   margin: 0;
   height: 100%;
   width: 100%;
+  display: flex;
   .hello{
-    position: absolute;
+    // position: absolute;
     height: 100%;
-    width: 100%;
+     // width: 90%;
+    right: 0;
+    // flex: 0.9;
+    // float: right;
+    // width: 100%;
   }
   .search{
     position: absolute;
@@ -295,78 +271,17 @@ import * as consts from '../common/const'
     right: 150px;
     bottom: 10px;
   }
-  .navigator{
-    // background: rgba(185, 184, 184, 0.8);
-    width: 160px;
-    height: 100%;
-    .ava{
-      border-bottom: 0.5px solid #fff;
-      position: relative;
-      width: 100%;
-      height: 80px;
-      .avator{
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        background-color: red;
-        margin: 10px 30px;
-        border-radius: 50%;
-      }
-      .avatorBtn{
-        position: absolute;
-        right: 30px;
-        bottom: 10px;
-        font-size: 12px;
-        color: #fff;
-      }
-    }    
-  }  
+  
 }
   
 </style>
 <style>
-.clearfix:after{visibility:hidden;display:block;font-size:0;content: " ";clear:both;height:0;}
-.clearfix{*zoom:1;}
+
 .el-collapse-item__header{
       color: #71a8e0;
       font-size: 14px;
       padding: 0 10px;
 }
-.el-submenu div:hover{
-  background-color: #46988efa;
-}
-.el-menu-item-group li:hover{
-  background-color: #46988efa;
-}
-.el-menu-item-group__title{
-  padding: 0px;
-}
-.el-submenu .el-menu-item {
-  padding-left: 30px !important;
-  height: 35px;
-  line-height: 35px;
-  min-width: 150px;
-  padding: 0 85px;
-  color: #71a8e0;
-  font-size: 12px;
-}
- .el-submenu__title{
-  padding-left: 25px !important;
-  text-align: left;
-  color: #71a8e0;
-  height: 40px;
-  line-height: 40px;
-  font-size: 16px;
-}
-.el-menu--inline .el-submenu__title{
-   padding-left: 30px !important;
-   font-size: 14px;
-}
-.el-menu{
-  height: 100%;
-}
-.el-submenu__title i{
-  color: #fff;
-}
+
 </style>
 

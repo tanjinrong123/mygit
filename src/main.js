@@ -8,11 +8,16 @@ import BMap from 'vue-baidu-map'
 import Vuex from 'vuex'
 import axios from 'axios'
 import 'element-ui/lib/theme-chalk/index.css'
-Vue.use(Vuex)
+import sider from './components/common/sider.vue'
+import Headers from './components/common/header.vue'
+import HighCharts from 'highcharts'
 Vue.use(ElementUI)
 Vue.use(BMap,{
   ak:'mj5Ztq2ugALxuBChiUgs6H0V7Cu0hfHU'
 })
+Vue.component('sider', sider)
+Vue.component('headers', Headers)
+Vue.use(HighCharts)
 
 Vue.config.productionTip = false
 
