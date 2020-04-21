@@ -36,7 +36,7 @@
             <el-input
               v-model="search"
               size="mini"
-              placeholder="输入项目关键字搜索"/>
+              placeholder="输入关键字搜索"/>
           </template>
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -45,13 +45,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="10"
-        layout="prev, pager, next, jumper"
-        :total="1000">
-      </el-pagination> -->
     </div>
   </div>
 </template>
@@ -71,7 +64,7 @@ export default {
       multipleSelection:[],
       search:'',
       currentPage:1,
-      name:'项目图形'
+      name:'矢量数据'
     }
   },
   created(){

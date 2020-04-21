@@ -41,7 +41,7 @@ import * as Points from "./points";
 
 export default {
   components: {
-    TwoCharts: () => import("../common/chart/twoCharts")
+    HighChart: () => import("../common/chart/highchart")
   },
   data() {
     return {
@@ -49,14 +49,11 @@ export default {
       contens: {},
       one: {},
       tableData: [],
-      tableHeader: [
-        { id: 0, value: "value", label: "地下水位(m)" },
-        { id: 1, value: "value2", label: "降雨量(mm)" },
-        ],
+      tableHeader: [{ id: 0, value: "value", label: "地下水位(m7)" }],
       multipleSelection: [],
       search: "",
       currentPage: 1,
-      name: "数据分析",
+      name: "历史监测数据",
       page: {},
       loading: {
         indexLoading: false,
@@ -72,8 +69,8 @@ export default {
     };
   },
   created() {
-    this.header = consts.getHeaderConfig("analysis");
-    this.page = consts.getPageConfig("two");
+    this.header = consts.getHeaderConfig("history");
+    this.page = consts.getPageConfig("one");
     // this.contens=Contents.getContent('table')
 
     // this.one=this.contens.one

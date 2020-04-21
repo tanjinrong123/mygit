@@ -1,31 +1,43 @@
 <template>
   <div class="sider">    
-    <div @click="showMenus()"> 
+    <div @click="showMenus()" class="sum"> 
       <i class="iconfont icon-liebiao navi "></i>
     </div>  
     <div class="navigator" v-if="showMenu">
       <el-menu 
         router
-        default-active="1"
+        :default-active="$route.name"
         class="el-menu-vertical-demo"
         text-color="#fff"
         background-color="#8AC7B3"
-        active-text-color="#fff">
-        <div class="ava">          
-          <div class="avator">
-            <image src='src/assets/images/bo.jpg'></image>
-          </div>
-        <div class="avatorBtn" >退出</div>
-        </div>        
-        <el-submenu :index="item.titleIndex" v-for="item in menu"  :key="item.titleIndex">
-          <template slot="title">
-            <i :class="item.icon"></i>
-            <span>{{item.title}}</span>
-          </template>
-          <el-menu-item @click.native="changeTitle(route_keys.levelIndex)" v-for="route_keys in item.levelInfo" 
-          :index="route_keys.levelIndex" :key="route_keys.levelIndex" :route="route_keys.path">{{route_keys.level}}
-          </el-menu-item>           
-        </el-submenu>        
+        active-text-color="#ffd04b">
+        <div class="ava"> 
+          <img class="avator" src='@/assets/images/bo.jpg'>
+        <div class="avatorBtn btns" @click='backIndex()'>主页</div>
+        <div class="avatorBtn" @click='backLogin()'>退出</div>
+        </div>
+        <label v-for="item in menu"  :key="item.titleIndex">
+          <el-submenu :index="item.titleIndex">
+            <template slot="title">
+              <i :class="item.icon"></i>
+              <span>{{item.title}}</span>
+            </template>
+            <template v-for="ele in item.levelInfo">
+              <el-menu-item v-if="!ele.levelInfo"  @click.native="changeTitle(ele.levelIndex)" 
+            :index="ele.levelIndex" :key="ele.levelIndex" :route="ele.path">{{ele.level}}
+            </el-menu-item> 
+            <el-submenu  v-else :index="ele.titleIndex">
+              <template slot="title">{{ele.level}}</template>
+              <el-menu-item v-for="data in ele.levelInfo"  @click.native="changeTitle(data.levelIndex)" 
+            :index="data.levelIndex" :key="data.levelIndex" :route="data.path">{{data.level}}
+            </el-menu-item> 
+
+              </el-submenu>
+
+            </template>
+                      
+          </el-submenu>
+        </label>
       </el-menu>
     </div>
   </div>
@@ -37,12 +49,24 @@ import * as consts from '../../common/const'
 export default {
   data(){
     return{
-      showMenu:true,
+      // showMenu:true,
       menu:{},
     }
   },
   created(){
     this.getMenu()
+  },
+  computed:{
+    showMenu: {
+    // getter
+    get: function(){
+      return this.$store.state.menu.showMenu
+    },
+    // setter
+    set: function(v){
+      this.$store.state.menu.showMenu=v
+    }
+    },
   },
   methods:{
      // 导航栏显示与否
@@ -53,6 +77,13 @@ export default {
       getMenu(){
         this.menu=consts.ASIDE_TITLE
         // this.projects=this.menu.project
+      },
+      // 点击退出，返回到登录页面
+      backLogin(){
+        this.$router.push({name:'login'})
+      },
+      backIndex(){
+        this.$router.push({name:'index'})
       },
       changeTitle(){}
   }
@@ -68,14 +99,18 @@ export default {
   // width:160px;
   // flex: 0.1;
   height:100%;
-   .navi{
-    position: absolute;
-    left: 10px;
+  .sum{
+    position: fixed;
     top: 10px;
-    // width: 30px;
+    left: 6px;
+    width: 23px;
+    height: 23px;
+    z-index:999;
+  }
+   .navi{
+    color: #999;
     font-size: 20px;
-    background: rgba(185, 184, 184, 0.8);
-    z-index: 2;
+    
   }
   .navigator{ 
     position: fixed;
@@ -94,19 +129,23 @@ export default {
         width: 60px;
         height: 60px;
         background-color: red;
-        margin: 10px 40px;
+        top:10px;
+        left: 40px;
         border-radius: 50%;
       }
       .avatorBtn{
         position: absolute;
-        right: 30px;
+        right: 10px;
         bottom: 10px;
         font-size: 12px;
         color: #fff;
+        cursor: pointer;
+      }
+      .btns{
+         bottom: 50px;
       }
     }    
   } 
-
   .el-submenu div:hover{
   background-color: #46988efa;
 }
@@ -121,7 +160,7 @@ export default {
   line-height: 35px;
   min-width: 0px;
   color: #71a8e0;
-  font-size: 12px;
+  font-size: 14px;
 }
 .el-menu--inline .el-submenu__title{
    font-size: 14px;
@@ -132,7 +171,7 @@ export default {
 </style>
 <style>
  .el-submenu .el-submenu__title{
-  margin-left: -60px;  
+  margin-left: -40px;  
 }
 .el-submenu__title i{
   color: #fff;

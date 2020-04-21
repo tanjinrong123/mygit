@@ -20,7 +20,7 @@
     <!-- 搜索栏 -->
     <el-autocomplete
       class="search"
-      v-model="state"
+      v-model="searchName"
       :fetch-suggestions="querySearchAsync"
       placeholder="请输入内容"
       suffix-icon="el-icon-search"
@@ -29,44 +29,69 @@
     ></el-autocomplete>
     <!-- 搜索下拉框     -->
     <el-collapse v-model="activeName" accordion class="searchResult"  v-show="isSearch">
-        <el-collapse-item title="项目简介" name="1">
+        <el-collapse-item title="滑坡区简介" name="1">
           <div class="texts">巫山县地处渝东大门，受地层岩性、地质构造、地形地貌、水文地质及人类工程活动等诸多因素的影响，巫山县长江干流库岸区域地质灾害极为发育，
-            在江河岸坡、台地边缘形成了众多的滑坡、危岩、泥石流、塌陷等地质灾害...</div>
+            在江河岸坡、台地边缘形成了众多的滑坡、危岩、泥石流、塌陷等地质灾害...</div>          
+          <!-- <router-link :to="{ name: 'project_survey',params:{projectName:state}}">查看更多</router-link> -->
+          <a class="more" href='#' @click='toSurvey()'>查看更多</a>
         </el-collapse-item>
-        <el-collapse-item title="项目文档" name="2">
+        <el-collapse-item title="文档" name="2">
           <div class="words">
             <ul v-for="item in project.words" :key="item.id" class="wordsUl" >
               <li><a href="">{{item.name}}</a></li>
             </ul>
           </div>
+          <a class="more" href='#' @click='toWord()'>查看更多</a>
         </el-collapse-item>
-        <el-collapse-item title="项目表格" name="3">
+        <!-- <el-collapse-item title="项目表格" name="3">
           <div class="words">
             <ul v-for="item in project.xlx" :key="item.id" class="wordsUl" >
               <li><a href="">{{item.name}}</a></li>
             </ul>
           </div>
-        </el-collapse-item>
-        <el-collapse-item title="项目图形" name="4">
-          <div class="words">
-            <ul v-for="item in project.shp" :key="item.id" class="wordsUl" >
-              <li><a href="">{{item.name}}</a></li>
-            </ul>
-          </div>
-        </el-collapse-item>
-        <el-collapse-item title="项目图片" name="5">
+          <a class="more" href='#' @click='toTable()'>查看更多</a>
+        </el-collapse-item> -->
+        <el-collapse-item title="影像" name="4">
            <div class="imgs">
              <!-- <img src="../assets/images/1.jpg" alt=""> -->
             <ul v-for="item in project.img" :key="item.id" class="imgUl" >
               <li><img :src='item.url'></li>
             </ul>
           </div>
+          <a class="more" href='#' @click='toImg()'>查看更多</a>
         </el-collapse-item>
+        <el-collapse-item title="矢量数据" name="5">
+          <div class="words">
+            <ul v-for="item in project.shp" :key="item.id" class="wordsUl" >
+              <li><a href="">{{item.name}}</a></li>
+            </ul>
+          </div>
+          <a class="more" href='#' @click='toShp()'>查看更多</a>
+        </el-collapse-item>
+        
     </el-collapse>    
   </div>
 </template>
 <script>
-import * as consts from '../common/const'
+// console.log('89');
+//   d3 = require("d3-geo@1")
+//   shapefile = require("shapefile")
+//   projection = d3.geoAlbersUsa()
+//     .scale(1272)
+//     .translate([width / 2, height / 2])
+//     width = 954
+//     height=600
+//   const context = DOM.context2d(width, height);
+//   console.log('89');
+//   const context.canvas;
+//   const path = d3.geoPath(projection, context);
+//   const source = await shapefile.open(await FileAttachment("./static/shp/1.shp").stream(), null);
+//   while (true) {
+//     const result = await source.read();
+//     if (result.done) break;
+//     context.beginPath(), path(result.value), context.stroke();
+//   }
+import * as consts from '../../common/const'
   export default {
     name: 'HelloWorld',
     data () {
@@ -74,17 +99,17 @@ import * as consts from '../common/const'
       center: {lng: 0, lat: 0},
       zoom: 6 ,
       restaurants:[],
-      state: '',
+      searchName: '',
       timeout:  null,
       activeName:['1'],
       project:[],
       isCollapse: true,
       lng:'109.89',
       lat:'31.07',
-      Opacity:0,
+      Opacity:0.1,
       projectPoints:[
-        {lng:109.897043,
-        lat:31.075075,
+        {lng:109.89,
+        lat:31.19,
         name:'巫山三峡'},
         {lng:110.014452,
         lat:36.583472,
@@ -92,23 +117,47 @@ import * as consts from '../common/const'
         }
       ],
       points:[
-        {lng:109.84,
-        lat:31.25,
-        name:'X1'
-        },{lng:110,
-        lat:31.0753,
-        name:'X2'
-        },{lng:109.899,
-        lat:31.075075
-        },{lng:109.891,
-        lat:31.075075
-        },{lng:116.307852,
-        lat:40.057031}
+        {lng:109.74661305,
+        lat:31.031727,
+        name:'JC17'
+        },{lng:109.7460447,
+        lat:31.03273888,
+        name:'jc18'
+        },{lng:109.7457983,
+        lat:31.0331522,
+         name:'JC18'
+        },{lng:109.7475527,
+        lat:31.03259833,
+         name:'JC21'
+        },{lng:109.74544666,
+        lat:31.0361194,
+         name:'JC23'},
+        {lng:109.747205277,
+        lat:31.0339397,
+        name:'JC25'},
+        {lng:109.746848888,
+        lat:31.03514944,
+        name:'JC28'},
+        {lng:109.7449283,
+        lat:31.034776111,
+        name:'JC37'},
+        {lng:109.74716972,
+        lat:31.034162777,
+        name:'JC40'},
+        {lng:109.74714472,
+        lat:31.0347694,
+         name:'JC42'},
+         {lng:109.74551388,
+        lat:31.03370861,
+         name:'JC44'},
+        //  {lng:109.74544666,
+        // lat:31.0361194,
+        //  name:'JC23'}
       ],
       projects:[],
       menuShow:false,
       isSearch:false,
-     
+      projectId:1
       }
      
     },
@@ -119,7 +168,7 @@ import * as consts from '../common/const'
       this.restaurants = this.loadAll()
     },
     watch:{
-    },
+    },    
     methods:{ 
       handler ({BMap, map}) {
         // console.log(BMap,map);
@@ -130,21 +179,28 @@ import * as consts from '../common/const'
         this.points.forEach(item=>{
         var point = new BMap.Point(item.lng, item.lat);
         var marker = new BMap.Marker(point)
+        var label = new BMap.Label(item.name,{labelStyle:{color: 'red', fontSize : '12px'},offset:{width: 0, height: 30}});
+        marker.setLabel(label)
         marker.addEventListener('click',(e)=>{
-          // console.log(marker,e);
+          console.log(marker,e);
+          this.$router.push({name:'project_analysis'})
         })
           markers.push(marker)
           map.addOverlay(marker) 
         })
-        map.addEventListener("mousemove",(e)=>{
-        this.lng=e.point.lng.toFixed(2)+'°'
-        this.lat= e.point.lat.toFixed(2)+'°'
-        })
+       
         // 当zoom大于10时，显示监测点
         map.addEventListener('zoomend',()=>{          
           this.addJCD(map,markers)          
         })
-        map.addEventListener("click",(e)=>{
+
+
+        // map.addEventListener("click",(e)=>{
+        // this.lng=e.point.lng.toFixed(2)+'°'
+        // this.lat= e.point.lat.toFixed(2)+'°'
+        // })
+        // 鼠标移动时，动态显示经纬度
+         map.addEventListener("mousemove",(e)=>{
         this.lng=e.point.lng.toFixed(2)+'°'
         this.lat= e.point.lat.toFixed(2)+'°'
         })
@@ -182,11 +238,13 @@ import * as consts from '../common/const'
         };
       },
       loadAll(){
-        return [{ "value": "巫山三峡", "address": "长宁区新渔路144号" },
-          { "value": "延长", "address": "上海市长宁区淞虹路661号" },]
+        return [{ "index":1,"value": "巫山三峡", "address": "长宁区新渔路144号" },
+          {  "index":2,"value": "延长", "address": "上海市长宁区淞虹路661号" },]
       }, 
       // 搜索框搜索
       chooseOne(val){
+        // console.log(val,99);
+        this.projectId=val.index
         let choice=val.value
         // 调用接口，获取数据project
         this.isSearch=true
@@ -194,8 +252,30 @@ import * as consts from '../common/const'
           words:[{id:0,name:'长江干流地灾调查总报告-A3',src:'path'},{id:1,name:'巫山长江沿线地层简表',src:'path'},{id:2,name:'危岩特征表-笔架山区域'},{id:3,name:'危岩特征表-笔架山区域'},{id:4,name:'危岩特征表-笔架山区域'},{id:5,name:'危岩特征表-笔架山区域'},{id:6,name:'危岩特征表-笔架山区域'},],
           xlx:[{id:0,name:'长江干流地灾调查总报告-A3',src:'path'},{id:1,name:'巫山长江沿线地层简表',src:'path'},{id:2,name:'危岩特征表-笔架山区域'},{id:3,name:'危岩特征表-笔架山区域'},{id:4,name:'危岩特征表-笔架山区域'},{id:5,name:'危岩特征表-笔架山区域'},{id:6,name:'危岩特征表-笔架山区域'},],
           shp:[{id:0,name:'水系',src:'path'},{id:1,name:'坡度',src:'path'},{id:2,name:'滑坡点'},{id:3,name:'危岩特征表-笔架山区域'},{id:4,name:'危岩特征表-笔架山区域'},{id:5,name:'危岩特征表-笔架山区域'},{id:6,name:'危岩特征表-笔架山区域'},],
-          img:[{id:0,name:'长江干流地灾调查总报告-A3',src:'path',url:require('../assets/images/1.jpg')},{id:1,name:'巫山长江沿线地层简表',src:'path',url:require('../assets/images/1.jpg')},{id:2,name:'危岩特征表-笔架山区域',url:require('../assets/images/1.jpg')},{id:3,name:'危岩特征表-笔架山区域',url:require('../assets/images/1.jpg')},{id:4,name:'危岩特征表-笔架山区域',url:'../assets/images/1.jpg'}]
+          // img:[{id:0,name:'长江干流地灾调查总报告-A3',src:'path',url:require('../assets/images/1.jpg')},{id:1,name:'巫山长江沿线地层简表',src:'path',url:require('../assets/images/1.jpg')},{id:2,name:'危岩特征表-笔架山区域',url:require('../assets/images/1.jpg')},{id:3,name:'危岩特征表-笔架山区域',url:require('../assets/images/1.jpg')},{id:4,name:'危岩特征表-笔架山区域',url:'../assets/images/1.jpg'}]
         }
+      },
+      // 点击搜索框的简介，跳转
+      toSurvey(){
+        this.$router.push({name: 'project_survey',params:{projectId:this.projectId}})
+        this.$store.commit('SET_SHOWMENU',true)
+      },
+      // 点击搜索框的简介，跳转
+      toWord(){
+        this.$router.push({name: 'project_word',params:{projectId:this.projectId}})
+        this.$store.commit('SET_SHOWMENU',true)
+      },
+      toTable(){
+        this.$router.push({name: 'project_table',params:{projectId:this.projectId}})
+        this.$store.commit('SET_SHOWMENU',true)
+      },
+      toShp(){
+        this.$router.push({name: 'project_graph',params:{projectId:this.projectId}})
+        this.$store.commit('SET_SHOWMENU',true)
+      },
+      toShp(){
+        this.$router.push({name: 'project_img',params:{projectId:this.projectId}})
+        this.$store.commit('SET_SHOWMENU',true)
       },
      
     }
@@ -204,8 +284,8 @@ import * as consts from '../common/const'
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@import '../../static/css/clear';
-@import '../../static/css/common';
+@import '../../../static/css/clear';
+@import '../../../static/css/common';
 .a{
   position: relative;
   margin: 0;
@@ -240,6 +320,11 @@ import * as consts from '../common/const'
       text-align: left;
       padding: 0 10px;
     }
+    .more{
+      color: #71a8e0;
+      float: right;
+      margin-right: 10px;
+    }
     .words{
       text-align: left;
       height: 300px;
@@ -247,6 +332,9 @@ import * as consts from '../common/const'
       .wordsUl{
         height: 15px;
         padding:0 30px;
+        a{
+          color: #606266;
+        }
       }
     }
     .imgs{
@@ -256,7 +344,8 @@ import * as consts from '../common/const'
       .imgUl{
         list-style: none; 
         float: left;   
-        padding: 0 8px;    
+        padding: 0 8px; 
+
         img{
           width: 100px;
           height: 50px;

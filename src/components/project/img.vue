@@ -45,7 +45,7 @@
             <el-input
               v-model="search"
               size="mini"
-              placeholder="输入项目关键字搜索"/>
+              placeholder="输入影像关键字搜索"/>
           </template>
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>

@@ -4,7 +4,7 @@
     <div class="body">
         <sider/>
         <!-- <el-scrollbar class="page-component__scroll" :style="{ paddingLeft: movePadding }"> -->
-        <div class="content">
+        <div :class="showMenu?'content left1':'content left2'">
             <router-view></router-view>
         </div>
       <!-- </el-scrollbar> -->
@@ -18,17 +18,17 @@ export default {
   components: {
     Sider,
     Header
-  },
+  },  
   data() {
     return {
       box: '',
       homeTop: ''
     }
   },
-  computed: {
-    movePadding() {
-      // return parseInt(this.$store.state.continer_left) + 'px'
-    }
+  computed:{
+    showMenu(){
+      return this.$store.state.menu.showMenu
+    },
   },
   methods: {}
 }
@@ -40,12 +40,18 @@ export default {
   height: 100%;
   .body {
     display: flex;
-    height: auto;
+    // height: auto;
+    height: 100%;
     .content{
-      width: 100%;
-      padding-left: 142px;
+      width: 100%;      
       background-color: rgb(238, 235, 235);
       // height: 100%;
+    }
+    .left1{
+      padding-left: 142px;
+    }
+    .left2{
+      padding-left: 15px;
     }
   }
 }

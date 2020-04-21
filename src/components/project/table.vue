@@ -29,7 +29,7 @@
           :filter-method="filterTag"
           filter-placement="bottom-end">
         </el-table-column>
-        <el-table-column
+        <el-table-column          
           fixed="right"
           width="200">
           <template slot="header" slot-scope="scope">
@@ -39,20 +39,18 @@
               placeholder="输入项目关键字搜索"/>
           </template>
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">下载</el-button>
-            <el-button type="text" size="small"  @click.native.prevent="deleteRow(scope.$index, tableData)">删除</el-button>
+            <el-button @click="look(scope.row)" type="text" size="small">查看</el-button>
+            <a class="download" :href="downLoadUrl"  download="" @click='downLoad()'>下载</a>
+            <el-button type="text" size="small"  @click="deleteRow(scope.$index, tableData)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <!-- <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="10"
-        layout="prev, pager, next, jumper"
-        :total="1000">
-      </el-pagination> -->
     </div>
+    <div class="preview" v-if="showPreview">
+      <div class="close" @click='close()'>x</div>
+      <iframe class="iframe" src='https://view.officeapps.live.com/op/view.aspx?src=http://storage.xuetangx.com/public_assets/xuetangx/PDF/1.xls' frameborder='1'>
+      </iframe>
+    </div>    
   </div>
 </template>
 
@@ -71,7 +69,9 @@ export default {
       multipleSelection:[],
       search:'',
       currentPage:1,
-      name:'项目表格'
+      name:'项目表格',
+      showPreview:false,
+      downLoadUrl:''
     }
   },
   created(){
@@ -97,10 +97,18 @@ export default {
     filterTag(value, row) {
       return row.format === value;
     },
-    // 分页
-     handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      }
+    // 查看预览文档
+    look(){
+      this.showPreview=true
+    },
+    // 关闭预览
+    close(){
+      this.showPreview=false
+    },
+    // 下载文档
+    downLoad(){
+      this.downLoadUrl=''
+    }
   }
 }
 </script>
@@ -126,6 +134,36 @@ export default {
   padding: 15px;
   }
   
+.preview{
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #ebeef5;
+  .iframe{
+    position: absolute;
+    width:95%;
+    height:90%;
+    top:40px;
+    left:40px;
+  }
+  .close{
+    position: absolute;
+    font-size: 40px;
+    top: 0px;
+    left: 0px;
+    width: 40px;
+    height: 40px;
+    background-color: rgb(48, 47, 47,0,8);
+    color: #fff;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 50%;
+  }
+}  
+
   
 }
 

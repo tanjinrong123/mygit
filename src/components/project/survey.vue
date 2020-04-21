@@ -11,10 +11,10 @@
       <div class="two">
         <div class="twoML clearfix">目录</div>
         <ul class="twoUL">          
-          <li><a href="">项目文档</a></li>
-          <li><a href="">项目表格</a></li>
-          <li><a href="">项目图形</a></li>
-          <li><a href="">项目图片</a></li>
+          <li><a href="">文档</a></li>
+          <!-- <li><a href="">项目表格</a></li> -->
+          <li><a href="">影像</a></li>
+          <li><a href="">矢量数据</a></li>
         </ul>
       </div>
       <hr>
@@ -32,14 +32,19 @@ export default {
       header:[],
       contens:{},
       one:{},
-      name:'项目简介'
+      name:'滑坡区简介'
     }
   },
   created(){
+    // console.log(this.$route.params.projectName);
     this.header=consts.getHeaderConfig('survey')
     this.contens=Contents.getContent('survey')
     this.one=this.contens.one
   },
+  computed: {
+  },
+  watch:{
+  }
 }
 </script>
 
@@ -57,7 +62,7 @@ export default {
   .one{
     position: relative;
     text-align: left;
-    height: 270px;
+    height: 500px;
     background-color: #fff;
     .oneName{ 
       position: absolute;

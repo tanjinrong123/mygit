@@ -43,52 +43,68 @@ export default {
           "#FCB9D8",
           "#E4DAA4"
         ],
+        chart: {
+        zoomType: 'xy'
+        },
         title: {
           text: ""
         },
         subtitle: {
           text: ""
         },
-        credits: {
-          enabled: false
+         yAxis: [{ // Primary yAxis
+        labels: {
+            format: '{value}mm',
+            style: {
+                color: "#FF79C4"
+            }
         },
-        lang: {
-          noData: "暂无数据"
+        title: {
+            text: '降雨量',
+            style: {
+                color: "#FF79C4"
+            }
         },
-        noData: {
-          style: {
-            fontWeight: "bold",
-            fontSize: "14px",
-            color: "#CCCCCC"
-          }
+        // opposite: false
+    }, { // Secondary yAxis
+        title: {
+            text: '地下水位',
+            style: {
+                color:"#A39FFE"
+            }
         },
+        labels: {
+            format: '{value} m',
+            style: {
+                color: "#A39FFE"
+            }
+        },
+        // startOnTick:true,
+        // minPadding:50,
+        min:150,
+        opposite: true
+    }],
         tooltip: {
-          crosshairs: true,
+          // crosshairs: true,
           shared: true,
-          useHTML: true,
-          style: {
-            padding: 0,
-            borderWidth: 0,
-            backgroundColor: "#FFF"
-          },
-          footerFormat: "</table>",
-          valueDecimals: 0
+          // useHTML: true,
+          // style: {
+          //   padding: 0,
+          //   borderWidth: 0,
+          //   backgroundColor: "#FFF"
+          // },
+          // footerFormat: "</table>",
+          // valueDecimals: 0
         },
-        loading: {
-          hideDuration: 0,
-          showDuration: 0,
-          labelStyle: {
-            color: "#3B86FF",
-            fontWeight: "bold",
-            fontSize: "14px",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            top: "0"
-          }
-        }
+         legend: {
+        layout: 'vertical',
+        align: 'left',
+        x: 120,
+        verticalAlign: 'top',
+        y: 100,
+        floating: true,
+        backgroundColor: '#FFFFFF'
+    },
       });
     },
     getChart() {

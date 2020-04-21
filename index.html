@@ -8,6 +8,25 @@
   </head>
   <body>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
   </body>
 </html>
+<!-- <!DOCTYPE html>
+<script src="https://unpkg.com/shapefile@0.6">
+    console.log('89');
+  d3 = require("d3-geo@1")
+  projection = d3.geoAlbersUsa()
+    .scale(1272)
+    .translate([width / 2, height / 2])
+    width = 954
+    height=600
+  const context = DOM.context2d(width, height);
+  console.log('89');
+  yield context.canvas;
+  const path = d3.geoPath(projection, context);
+  const source = await shapefile.open(await FileAttachment("./static/shp/1.shp").stream(), null);
+  while (true) {
+    const result = await source.read();
+    if (result.done) break;
+    context.beginPath(), path(result.value), context.stroke();
+  }</script> -->
+

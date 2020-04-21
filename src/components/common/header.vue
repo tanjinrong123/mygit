@@ -1,6 +1,6 @@
 <template>
 <div class="title">
-  <div class="nav_title clearfix" >
+  <div :class="showMenu?'nav_title clearfix left1':'nav_title clearfix left2'" >
        <p class='survey'>{{name}}</p>
        <div class='content'>
           <div class="float_left" v-if="headerShow[0]">
@@ -18,7 +18,7 @@
             </el-date-picker>
           </div>
           <div class="float_left" v-if="headerShow[1]">
-            <span>项目：</span>
+            <span>滑坡区：</span>
             <el-select
               size="mini"
               v-model="queryData.projectId"
@@ -214,7 +214,21 @@
                 </span> -->
               </div>
             </transition>
-          </div>  
+          </div>
+          <div class="float_right flex-nowrap upload" v-if="headerShow[5]">
+            <el-upload
+               ref="upload"
+               action="https://jsonplaceholder.typicode.com/posts/"
+               :multiple='true'
+               :auto-upload="false">
+               <!-- <el-button slot="trigger" size="mini" type="primary">导入</el-button> -->
+               <el-button style="margin-right: 80px;" size="mini" type="primary" @click="submitUpload">上传</el-button>
+             </el-upload>
+             
+          </div> 
+          <div class="float_right flex-nowrap upload" v-if="headerShow[6]">
+            <el-button style="margin-left: 10px;" size="mini" type="success" @click="submitUpload">下载</el-button>
+          </div>
           </div>
        </div>
   </div>
@@ -271,13 +285,21 @@ export default {
   computed: {
     pickerOptions () {
       return util.pickerdisabled
-    }
+    },
+    showMenu(){
+      return this.$store.state.menu.showMenu
+    },
   },
   created(){
+    if(this.$route.params.projectId!==undefined){
+      this.queryData.projectId=this.$route.params.projectId
+    }
     this.getProject()
     this.headerShow=this.header.headerShow
     this.contrastStatus=this.header.contrast
     this.changeStart()
+  },
+  watch:{
   },
   methods:{
     getProject(){
@@ -313,8 +335,10 @@ export default {
     },
     changeTime(v){
       console.log(v,8);
-
-    }
+    },
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
   }
 }
 </script>
@@ -334,11 +358,16 @@ export default {
   height: 80px;
   width: 100%;
 }
+.left1{
+left: 142px; 
+}
+.left2{
+left: 30px; 
+}
 .nav_title{
   position: fixed;
   top:0;
-  right: 0;
-  left: 142px; 
+  right: 0;  
   z-index: 99;
   background-color: #fff;
   .survey{
@@ -350,6 +379,11 @@ export default {
   .content{
     height:  30px;
     font-size: 12px; 
+    .upload{
+      margin-right: 20px;
+      position: fixed;      
+    }
+    
     .el-select{
       width: 120px;
     } 
@@ -368,9 +402,7 @@ export default {
     .el-date-editor--datetimerange.el-input, .el-date-editor--datetimerange.el-input__inner{
         width: 174px;
       } 
-    .el-date-editor .el-range__icon{
-        display: none;
-      }
+    
     .padding-right-md {
       padding-right: 20px;
     }
@@ -391,7 +423,9 @@ export default {
 
 </style>
 <style>
-
+.el-upload-list{
+  background-color: #fff;
+}
 .el-date-range-picker__time-header{
   display: none;
 }
@@ -464,6 +498,12 @@ export default {
 }
 .el-cascader{
   width: 130px;
+}
+.el-range-editor--mini .el-range__close-icon, .el-range-editor--mini .el-range__icon{
+        display: none;
+      }
+.el-date-editor .el-range-input{
+  width: 44%;
 }
 </style>
 
